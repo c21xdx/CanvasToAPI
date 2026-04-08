@@ -1,3 +1,5 @@
+> 如果想尝试一体化部署，请使用 [integrated 分支](https://github.com/iBUHub/CanvasToAPI/tree/integrated)；另外 Gemini cookie 过期很快。
+
 # Gemini Canvas to API Adapter
 
 中文文档 | [English](README_EN.md)
@@ -166,7 +168,7 @@ services:
 | `LOG_LEVEL`                 | 日志级别，支持 `INFO` 和 `DEBUG`。                                                                               | `INFO`               |
 | `TZ`                        | 日志和页面显示时间使用的时区，例如 `Asia/Shanghai`。留空时默认使用系统时区。                                     | 系统时区             |
 
-#### 🌐 会话路由配置
+#### 🌐 代理配置
 
 | 变量名                    | 描述                                                                | 默认值  |
 | :------------------------ | :------------------------------------------------------------------ | :------ |

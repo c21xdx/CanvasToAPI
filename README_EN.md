@@ -1,3 +1,5 @@
+> If you want to try the integrated deployment, please use the [integrated branch](https://github.com/iBUHub/CanvasToAPI/tree/integrated). Also, Gemini cookies expire quickly.
+
 # Gemini Canvas to API Adapter
 
 [中文文档](README.md) | English
@@ -166,7 +168,7 @@ On that page, manually enter the browser tag (`Browser Identifier`) and the serv
 | `LOG_LEVEL`                 | Log level. Supported values: `INFO`, `DEBUG`.                                                                                                           | `INFO`               |
 | `TZ`                        | Time zone used for logs and UI timestamps, for example `America/New_York`.                                                                              | System time zone     |
 
-#### 🌐 Session Routing Configuration
+#### 🌐 Proxy Configuration
 
 | Variable                  | Description                                                                                     | Default |
 | :------------------------ | :---------------------------------------------------------------------------------------------- | :------ |
