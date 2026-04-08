@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { ElMessage } from "element-plus";
 import I18n from "../utils/i18n";
 
@@ -59,6 +59,10 @@ const docSectionMap = {
         en: "%EF%B8%8F-other-configuration",
         zh: "%EF%B8%8F-其他配置",
     },
+    "proxy-config": {
+        en: "-proxy-configuration",
+        zh: "-代理配置",
+    },
 };
 
 // Use ref to track language changes
@@ -81,7 +85,7 @@ onUnmounted(() => {
 
 // Reactive translation helper
 const t = (key, options) => {
-    langVersion.value; // Access to track changes
+    langVersion.value;
     return I18n.t(key, options);
 };
 
@@ -118,27 +122,25 @@ const copyEnvVar = () => {
 </script>
 
 <style>
-/* Global style to style the popper properly, targeting deep elements */
-
-/* Custom theme overriding Element Plus defaults for softer contrast */
 .el-popper.custom-theme-tooltip.is-light {
     background-color: var(--el-bg-color-overlay, #ffffff);
     border: 1px solid var(--el-border-color-light, #e4e7ed);
     color: var(--el-text-color-primary, #303133);
     box-shadow: var(--el-box-shadow-light, 0 2px 12px 0 rgba(0, 0, 0, 0.1));
 }
+
 .el-popper.custom-theme-tooltip.is-light .el-popper__arrow::before {
     background-color: var(--el-bg-color-overlay, #ffffff);
     border: 1px solid var(--el-border-color-light, #e4e7ed);
 }
 
 .el-popper.is-dark.custom-theme-tooltip {
-    /* Milder dark instead of pure black */
     background-color: #2b2d30;
     border: 1px solid #414243;
     color: #cfd3d8;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
 }
+
 .el-popper.is-dark.custom-theme-tooltip .el-popper__arrow::before {
     background-color: #2b2d30;
     border: 1px solid #414243;
@@ -164,7 +166,7 @@ const copyEnvVar = () => {
 .el-popper.is-dark.env-var-tooltip .env-var-code {
     background-color: #3b3d41;
     border-color: #525457;
-    color: #e6a23c; /* Warning color stands out better in dark mode */
+    color: #e6a23c;
 }
 
 .el-popper.is-dark.env-var-tooltip .env-var-code:hover {
@@ -187,6 +189,7 @@ const copyEnvVar = () => {
     vertical-align: middle;
     transform: translateY(-2px);
 }
+
 .env-tooltip-icon:hover {
     opacity: 1;
 }
@@ -203,6 +206,7 @@ const copyEnvVar = () => {
     text-decoration: none;
     font-weight: 500;
 }
+
 .env-doc-link:hover {
     text-decoration: underline;
 }

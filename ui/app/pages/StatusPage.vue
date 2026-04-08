@@ -13,7 +13,7 @@
                     class="menu-item"
                     :class="{ active: activeTab === 'home' }"
                     :title="t('statusHeading')"
-                    @click="activeTab = 'home'"
+                    @click="switchTab('home')"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@
                     class="menu-item"
                     :class="{ active: activeTab === 'settings' }"
                     :title="t('actionsPanel')"
-                    @click="activeTab = 'settings'"
+                    @click="switchTab('settings')"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,7 @@
                     class="menu-item"
                     :class="{ active: activeTab === 'logs' }"
                     :title="t('realtimeLogs')"
-                    @click="activeTab = 'logs'"
+                    @click="switchTab('logs')"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -131,31 +131,109 @@
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                             </svg>
                             {{ t("serviceStatus") }}
+                            <span
+                                class="dot"
+                                :class="state.serviceConnected ? 'status-running' : 'status-error'"
+                                style="display: inline-block; vertical-align: middle; margin-left: 8px"
+                            ></span>
                         </h3>
                         <div class="status-list">
                             <div class="status-item">
-                                <span class="label">{{ t("serviceConnection") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <path d="M20 8h-2"></path>
+                                        <path d="M20 18h-2"></path>
+                                        <rect x="2" y="4" width="20" height="8" rx="2" ry="2"></rect>
+                                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                        <line x1="6" y1="8" x2="6.01" y2="8"></line>
+                                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                                    </svg>
+                                    {{ t("serviceConnection") }} </span
                                 ><span class="value status-text-bold" :class="serviceConnectedClass">{{
                                     serviceConnectedText
                                 }}</span>
                             </div>
-                            <div class="status-item">
-                                <span class="label">{{ t("browserConnection") }}</span
+                            <div v-if="state.serviceConnected" class="status-item">
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                                    </svg>
+                                    {{ t("browserConnection") }} </span
                                 ><span class="value status-text-bold" :class="browserConnectedClass">{{
                                     browserConnectedText
                                 }}</span>
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ t("wsPortLabel") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <path d="M5 9h14"></path>
+                                        <path d="M5 15h14"></path>
+                                        <path d="M8 5v14"></path>
+                                        <path d="M16 5v14"></path>
+                                    </svg>
+                                    {{ t("wsPortLabel") }} </span
                                 ><span class="value mono">{{ state.wsPort }}</span>
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ tf("selectionStrategyLabel", "Selection Strategy") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                                        <circle cx="9" cy="6" r="2"></circle>
+                                        <circle cx="15" cy="12" r="2"></circle>
+                                        <circle cx="11" cy="18" r="2"></circle>
+                                    </svg>
+                                    {{ tf("selectionStrategyLabel", "Selection Strategy") }} </span
                                 ><span class="value mono">{{ selectionStrategyText }}</span>
                             </div>
                         </div>
                     </section>
-                    <section class="status-card">
+                    <section v-if="state.serviceConnected" class="status-card">
                         <h3 class="card-title">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -176,20 +254,76 @@
                         </h3>
                         <div class="status-list">
                             <div class="status-item">
-                                <span class="label">{{ tf("activeSessionsLabel", "Active Sessions") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="8.5" cy="7" r="4"></circle>
+                                        <polyline points="17 11 19 13 23 9"></polyline>
+                                    </svg>
+                                    {{ tf("activeSessionsLabel", "Active Sessions") }} </span
                                 ><span class="value">{{ activeSessionCount }}</span>
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ tf("totalSessionsLabel", "Total Sessions") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                        <polyline points="2 17 12 22 22 17"></polyline>
+                                        <polyline points="2 12 12 17 22 12"></polyline>
+                                    </svg>
+                                    {{ tf("totalSessionsLabel", "Total Sessions") }} </span
                                 ><span class="value">{{ sessions.length }}</span>
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ tf("errorThresholdLabel", "Error Threshold") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <path
+                                            d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+                                        ></path>
+                                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    </svg>
+                                    <span>
+                                        {{ tf("errorThresholdLabel", "Error Threshold") }}
+                                        <EnvVarTooltip env-var="SESSION_ERROR_THRESHOLD" doc-section="proxy-config" />
+                                    </span> </span
                                 ><span class="value">{{ state.sessionErrorThreshold }}</span>
                             </div>
                         </div>
                     </section>
-                    <section class="status-card">
+                    <section v-if="state.serviceConnected" class="status-card">
                         <h3 class="card-title">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -209,9 +343,26 @@
                         </h3>
                         <div class="status-list">
                             <div class="status-item">
-                                <span class="label"
-                                    >{{ t("streamingMode") }}
-                                    <span class="label-note">({{ t("onlyAppliesWhenStreamingEnabled") }})</span></span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                    </svg>
+                                    <span>
+                                        {{ t("streamingMode") }}
+                                        <span class="label-note">({{ t("onlyAppliesWhenStreamingEnabled") }})</span>
+                                        <EnvVarTooltip env-var="STREAMING_MODE" doc-section="other-config" />
+                                    </span> </span
                                 ><span
                                     class="value status-text-bold"
                                     :class="state.streamingMode === 'real' ? 'status-ok' : 'status-error'"
@@ -219,39 +370,123 @@
                                 >
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ t("forceThinking") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <path d="M15.5 13a3.5 3.5 0 0 0-3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8"></path>
+                                        <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1-7 0v-1.8"></path>
+                                        <path d="M17.5 16a3.5 3.5 0 0 0 0-7h-.5"></path>
+                                        <path d="M19 9.3v-2.8a3.5 3.5 0 0 0-7 0"></path>
+                                        <path d="M6.5 16a3.5 3.5 0 0 1 0-7h.5"></path>
+                                        <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10"></path>
+                                    </svg>
+                                    <span>
+                                        {{ t("forceThinking") }}
+                                        <EnvVarTooltip env-var="FORCE_THINKING" doc-section="other-config" />
+                                    </span> </span
                                 ><span
                                     class="value status-text-bold"
-                                    :class="state.forceThinking ? 'status-ok' : 'status-warning'"
+                                    :class="state.forceThinking ? 'status-ok' : 'status-error'"
                                     >{{ state.forceThinking ? t("enabled") : t("disabled") }}</span
                                 >
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ t("forceWebSearch") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path
+                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                                        ></path>
+                                    </svg>
+                                    <span>
+                                        {{ t("forceWebSearch") }}
+                                        <EnvVarTooltip env-var="FORCE_WEB_SEARCH" doc-section="other-config" />
+                                    </span> </span
                                 ><span
                                     class="value status-text-bold"
-                                    :class="state.forceWebSearch ? 'status-ok' : 'status-warning'"
+                                    :class="state.forceWebSearch ? 'status-ok' : 'status-error'"
                                     >{{ state.forceWebSearch ? t("enabled") : t("disabled") }}</span
                                 >
                             </div>
                             <div class="status-item">
-                                <span class="label">{{ t("forceUrlContext") }}</span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                    <span>
+                                        {{ t("forceUrlContext") }}
+                                        <EnvVarTooltip env-var="FORCE_URL_CONTEXT" doc-section="other-config" />
+                                    </span> </span
                                 ><span
                                     class="value status-text-bold"
-                                    :class="state.forceUrlContext ? 'status-ok' : 'status-warning'"
+                                    :class="state.forceUrlContext ? 'status-ok' : 'status-error'"
                                     >{{ state.forceUrlContext ? t("enabled") : t("disabled") }}</span
                                 >
                             </div>
                             <div class="status-item">
-                                <span class="label"
-                                    >{{ t("maxRetries") }}
-                                    <span class="label-note">({{ t("onlyAppliesWhenFakeStreaming") }})</span></span
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <path d="M3 2v6h6"></path>
+                                        <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                                        <path d="M21 22v-6h-6"></path>
+                                        <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                                    </svg>
+                                    <span>
+                                        {{ t("maxRetries") }}
+                                        <span class="label-note">({{ t("onlyAppliesWhenFakeStreaming") }})</span>
+                                        <EnvVarTooltip env-var="MAX_RETRIES" doc-section="proxy-config" />
+                                    </span> </span
                                 ><span class="value">{{ state.maxRetries }}</span>
                             </div>
                         </div>
                     </section>
                 </div>
-                <section class="full-width-section">
+                <section v-if="state.serviceConnected" class="full-width-section">
                     <div class="status-card">
                         <div class="section-header">
                             <h3 class="card-title card-title-tight">
@@ -447,7 +682,10 @@
                                         <path d="m5 3 2 2"></path>
                                         <path d="m19 3-2 2"></path>
                                     </svg>
-                                    {{ t("latestVersion") }}
+                                    <span>
+                                        {{ t("latestVersion") }}
+                                        <EnvVarTooltip env-var="CHECK_UPDATE" doc-section="app-config" />
+                                    </span>
                                 </span>
                                 <span class="value">
                                     <span
@@ -569,7 +807,10 @@
                                         <line x1="3" y1="12" x2="3.01" y2="12"></line>
                                         <line x1="3" y1="18" x2="3.01" y2="18"></line>
                                     </svg>
-                                    {{ t("logLevel") }}
+                                    <span>
+                                        {{ t("logLevel") }}
+                                        <EnvVarTooltip env-var="LOG_LEVEL" doc-section="app-config" />
+                                    </span>
                                 </span>
                                 <el-select
                                     :model-value="state.debugMode"
@@ -724,7 +965,23 @@
                         </h3>
                         <div class="settings-switches">
                             <div class="switch-container">
-                                <span class="label">{{ t("streamingMode") }}</span>
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                    </svg>
+                                    {{ t("streamingMode") }}
+                                </span>
                                 <el-switch
                                     :model-value="state.streamingMode === 'real'"
                                     inline-prompt
@@ -735,7 +992,28 @@
                                 />
                             </div>
                             <div class="switch-container">
-                                <span class="label">{{ t("forceThinking") }}</span>
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <path d="M15.5 13a3.5 3.5 0 0 0-3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8"></path>
+                                        <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1-7 0v-1.8"></path>
+                                        <path d="M17.5 16a3.5 3.5 0 0 0 0-7h-.5"></path>
+                                        <path d="M19 9.3v-2.8a3.5 3.5 0 0 0-7 0"></path>
+                                        <path d="M6.5 16a3.5 3.5 0 0 1 0-7h.5"></path>
+                                        <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10"></path>
+                                    </svg>
+                                    {{ t("forceThinking") }}
+                                </span>
                                 <el-switch
                                     :model-value="state.forceThinking"
                                     :width="50"
@@ -746,7 +1024,27 @@
                                 />
                             </div>
                             <div class="switch-container">
-                                <span class="label">{{ t("forceWebSearch") }}</span>
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path
+                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                                        ></path>
+                                    </svg>
+                                    {{ t("forceWebSearch") }}
+                                </span>
                                 <el-switch
                                     :model-value="state.forceWebSearch"
                                     :width="50"
@@ -757,7 +1055,24 @@
                                 />
                             </div>
                             <div class="switch-container">
-                                <span class="label">{{ t("forceUrlContext") }}</span>
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px; vertical-align: middle"
+                                    >
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                    {{ t("forceUrlContext") }}
+                                </span>
                                 <el-switch
                                     :model-value="state.forceUrlContext"
                                     :width="50"
@@ -772,7 +1087,28 @@
                                 />
                             </div>
                             <div class="switch-container">
-                                <span class="label">{{ tf("selectionStrategyLabel", "Selection Strategy") }}</span>
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                                        <circle cx="9" cy="6" r="2"></circle>
+                                        <circle cx="15" cy="12" r="2"></circle>
+                                        <circle cx="11" cy="18" r="2"></circle>
+                                    </svg>
+                                    {{ tf("selectionStrategyLabel", "Selection Strategy") }}
+                                </span>
                                 <el-select
                                     :model-value="state.selectionStrategy"
                                     style="width: 150px"
@@ -818,9 +1154,10 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessageBox } from "element-plus";
+import EnvVarTooltip from "../components/EnvVarTooltip.vue";
 import I18n from "../utils/i18n";
 import escapeHtml from "../utils/escapeHtml";
 import { useTheme } from "../utils/useTheme";
@@ -844,6 +1181,7 @@ const state = reactive({
     logCount: 0,
     logMaxCount: 100,
     logs: "",
+    logScrollTop: 0,
     maxRetries: 3,
     releaseUrl: "",
     selectionStrategy: "round",
@@ -877,47 +1215,17 @@ const latestVersionFormatted = computed(() => {
     }
     return version;
 });
-const LOG_SYMBOL_REPLACEMENTS = [
-    [/✅/g, "[OK]"],
-    [/❌/g, "[ERROR]"],
-    [/⚠️|⚠/g, "[WARN]"],
-    [/ℹ️|ℹ/g, "[INFO]"],
-    [/🔄/g, "[SYNC]"],
-    [/⚡/g, "[FAST]"],
-    [/🚀/g, "[RUN]"],
-    [/🛡️|🛡/g, "[SAFE]"],
-    [/🖱️|🖱/g, "[CLICK]"],
-    [/🔴/g, "[ERROR]"],
-];
-const normalizeLogSymbols = value => {
-    let normalized = String(value || "")
-        .replace(/\uFE0F/g, "")
-        .replace(/\u200D/g, "");
-
-    LOG_SYMBOL_REPLACEMENTS.forEach(([pattern, replacement]) => {
-        normalized = normalized.replace(pattern, replacement);
-    });
-
-    return normalized;
-};
 const highlightLogLevel = (content, level, color) =>
     content.replace(
         new RegExp(`(^|\\r?\\n)(\\[${level}\\])(?=\\s)`, "g"),
         `$1<span style="color: ${color}; font-weight: bold;">$2</span>`
     );
 const formattedLogs = computed(() => {
-    const source = normalizeLogSymbols(state.logs || t("loading"));
-    let safeLogs = escapeHtml(source);
+    let safeLogs = escapeHtml(state.logs || t("loading"));
 
     safeLogs = highlightLogLevel(safeLogs, "DEBUG", "#3498db");
-    safeLogs = highlightLogLevel(safeLogs, "INFO", "#16a085");
-    safeLogs = highlightLogLevel(safeLogs, "OK", "#27ae60");
     safeLogs = highlightLogLevel(safeLogs, "WARN", "#f39c12");
     safeLogs = highlightLogLevel(safeLogs, "ERROR", "#e74c3c");
-    safeLogs = highlightLogLevel(safeLogs, "SYNC", "#8e44ad");
-    safeLogs = highlightLogLevel(safeLogs, "RUN", "#2980b9");
-    safeLogs = highlightLogLevel(safeLogs, "SAFE", "#2c3e50");
-    safeLogs = highlightLogLevel(safeLogs, "CLICK", "#7f8c8d");
 
     return safeLogs;
 });
@@ -1029,6 +1337,11 @@ const fetchVersionInfo = async () => {
 
 const refresh = async () => {
     try {
+        const logContainer = activeTab.value === "logs" ? document.getElementById("log-container") : null;
+        if (logContainer) {
+            state.logScrollTop = logContainer.scrollTop;
+        }
+
         const response = await fetch("/api/status");
         if (response.redirected) {
             window.location.href = response.url;
@@ -1040,11 +1353,35 @@ const refresh = async () => {
         }
         if (!response.ok) throw new Error(`status ${response.status}`);
         applyStatusPayload(await response.json());
+        if (activeTab.value === "logs") {
+            nextTick(() => {
+                const updatedLogContainer = document.getElementById("log-container");
+                if (updatedLogContainer) {
+                    updatedLogContainer.scrollTop = state.logScrollTop || 0;
+                }
+            });
+        }
     } catch (error) {
-        state.logCount = 0;
         state.serviceConnected = false;
-        sessions.value = [];
-        state.logs = `${tf("statusFetchFailed", "Failed to fetch status")}: ${error.message}`;
+    }
+};
+const switchTab = tabName => {
+    if (activeTab.value === "logs") {
+        const logContainer = document.getElementById("log-container");
+        if (logContainer) {
+            state.logScrollTop = logContainer.scrollTop;
+        }
+    }
+
+    activeTab.value = tabName;
+
+    if (tabName === "logs") {
+        nextTick(() => {
+            const logContainer = document.getElementById("log-container");
+            if (logContainer) {
+                logContainer.scrollTop = state.logScrollTop || 0;
+            }
+        });
     }
 };
 
@@ -1247,6 +1584,7 @@ watchEffect(() => {
     display: grid;
     gap: 24px;
     width: 100%;
+    align-items: stretch;
 }
 @media (max-width: 599px) {
     .dashboard-grid {
@@ -1263,20 +1601,21 @@ watchEffect(() => {
         grid-template-columns: repeat(3, 1fr);
     }
 }
-.settings-grid {
-    align-items: start;
-}
 .full-width-section {
     margin-top: 24px;
     width: 100%;
 }
 .status-card {
+    display: flex;
+    flex-direction: column;
     background: @background-white;
     border-radius: 16px;
     padding: 24px;
     box-shadow: @shadow-light;
     border: 1px solid @border-light;
     min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
 }
 .card-title {
     font-size: 0.9rem;
@@ -1305,20 +1644,44 @@ watchEffect(() => {
     flex-wrap: wrap;
     justify-content: flex-end;
 }
-.status-list,
-.settings-switches,
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.settings-switches {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .session-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-.status-item,
-.switch-container,
-.session-row {
+
+.status-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.95rem;
+    min-height: 32px;
+}
+
+.switch-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    min-height: 32px;
+}
+
+.session-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 12px;
 }
 .label,
