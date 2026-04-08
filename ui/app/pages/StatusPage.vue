@@ -138,7 +138,7 @@
                             ></span>
                         </h3>
                         <div class="status-list">
-                            <div class="status-item">
+                            <div class="status-item status-item-ws-endpoint">
                                 <span class="label">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +205,33 @@
                                         <path d="M16 5v14"></path>
                                     </svg>
                                     <span>{{ t("wsEndpointLabel") }}</span> </span
-                                ><span class="value mono">{{ browserWsEndpointText }}</span>
+                                ><span class="value mono value-copy-wrap">
+                                    <span
+                                        class="clickable-version clickable-copy-value"
+                                        :title="t('copy')"
+                                        @click="copyBrowserWsEndpoint"
+                                    >
+                                        {{ browserWsEndpointText }}
+                                        <span class="copy-icon">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="14"
+                                                height="14"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path
+                                                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </span>
                             </div>
                             <div class="status-item">
                                 <span class="label">
@@ -1395,14 +1421,30 @@ const sessionLastErrorText = session => {
     }
     return session.lastError.message || session.lastError.type || "";
 };
+const fallbackCopyText = text => {
+    const tempInput = document.createElement("input");
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    const copied = document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    return copied;
+};
 const copyText = async text => {
     try {
-        await navigator.clipboard.writeText(text);
+        if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(text);
+        } else if (!fallbackCopyText(text)) {
+            throw new Error("Clipboard API unavailable");
+        }
+        ElMessage.success(`${t("copySuccess")}: ${text}`);
     } catch (error) {
         console.error("Failed to copy:", error);
+        ElMessage.error(t("copyFailed"));
     }
 };
 const copyAppVersion = () => copyText(appVersion.value);
+const copyBrowserWsEndpoint = () => copyText(browserWsEndpointText.value);
 
 const applyStatusPayload = payload => {
     const status = payload?.status || {};
@@ -1876,6 +1918,25 @@ watchEffect(() => {
     color: @text-primary;
     font-weight: 500;
     font-family: @font-family-mono;
+}
+.status-item-ws-endpoint {
+    align-items: flex-start;
+    gap: 12px;
+}
+.value-copy-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+}
+.clickable-copy-value {
+    max-width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    text-align: right;
+    white-space: normal;
+    word-break: break-all;
 }
 .mono {
     font-family: @font-family-mono;
