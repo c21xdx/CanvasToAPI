@@ -114,6 +114,28 @@ services:
       TZ: Asia/Shanghai
 ```
 
+#### 🛠️ 方式 3：从源码构建
+
+如果你希望自己构建 Docker 镜像，可以使用以下命令：
+
+1. 构建镜像：
+
+   ```bash
+   docker build -t canvas-to-api .
+   ```
+
+2. 运行容器：
+
+   ```bash
+   docker run -d \
+     --name canvas-to-api \
+     -p 7861:7861 \
+     -e API_KEYS=your-api-key \
+     -e TZ=Asia/Shanghai \
+     --restart unless-stopped \
+     canvas-to-api
+   ```
+
 #### 🔌 步骤 2：连接浏览器会话
 
 容器启动后，仍然需要手动打开以下页面建立浏览器会话：

@@ -26,20 +26,15 @@
         "format:check": "prettier --check ."
     },
     "dependencies": {
-        "archiver": "^7.0.1",
         "axios": "^1.13.2",
-        "basic-auth": "^2.0.1",
         "cookie-parser": "^1.4.6",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
         "express-session": "^1.18.0",
-        "jszip": "^3.10.1",
         "mime-types": "^3.0.2",
         "ws": "^8.17.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.28.5",
-        "@babel/eslint-parser": "^7.28.5",
         "@vitejs/plugin-vue": "^5.1.0",
         "concurrently": "^9.2.1",
         "cross-env": "^7.0.3",
@@ -52,7 +47,6 @@
         "eslint-plugin-vue": "^9.33.0",
         "husky": "^8.0.3",
         "less": "^4.4.2",
-        "less-plugin-clean-css": "^1.6.0",
         "lint-staged": "^14.0.0",
         "nodemon": "^3.1.0",
         "prettier": "^3.7.4",

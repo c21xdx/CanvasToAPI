@@ -114,6 +114,28 @@ services:
       TZ: America/New_York
 ```
 
+#### 🛠️ Option 3: Build from Source
+
+If you prefer to build the Docker image yourself, use the following commands:
+
+1. Build the image:
+
+   ```bash
+   docker build -t canvas-to-api .
+   ```
+
+2. Run the container:
+
+   ```bash
+   docker run -d \
+     --name canvas-to-api \
+     -p 7861:7861 \
+     -e API_KEYS=your-api-key \
+     -e TZ=America/New_York \
+     --restart unless-stopped \
+     canvas-to-api
+   ```
+
 #### 🔌 Step 2: Connect a Browser Session
 
 After the container starts, you still need to manually open the following page and connect a browser session:
