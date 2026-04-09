@@ -22,7 +22,7 @@ class SessionRegistry extends EventEmitter {
             ? Math.max(1000, config.browserSessionAuthTimeoutMs)
             : 10000;
         this.sessionErrorThreshold = Number.isFinite(config.sessionErrorThreshold)
-            ? Math.max(1, config.sessionErrorThreshold)
+            ? Math.max(0, config.sessionErrorThreshold)
             : 3;
     }
 
@@ -483,7 +483,7 @@ class SessionRegistry extends EventEmitter {
             type,
         };
 
-        if (entry.failureCount >= this.sessionErrorThreshold && !entry.disabledAt) {
+        if (this.sessionErrorThreshold > 0 && entry.failureCount >= this.sessionErrorThreshold && !entry.disabledAt) {
             entry.disabledAt = Date.now();
             this.logger.error(
                 `[Session] Browser ${this._formatConnectionLabel(connectionId, entry)} disabled after ${entry.failureCount} error(s). Last error: ${message}`
@@ -492,7 +492,9 @@ class SessionRegistry extends EventEmitter {
         }
 
         this.logger.warn(
-            `[Session] Browser ${this._formatConnectionLabel(connectionId, entry)} error recorded (${entry.failureCount}/${this.sessionErrorThreshold}): ${message}`
+            this.sessionErrorThreshold > 0
+                ? `[Session] Browser ${this._formatConnectionLabel(connectionId, entry)} error recorded (${entry.failureCount}/${this.sessionErrorThreshold}): ${message}`
+                : `[Session] Browser ${this._formatConnectionLabel(connectionId, entry)} error recorded (${entry.failureCount}): ${message}`
         );
     }
 

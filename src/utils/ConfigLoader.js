@@ -74,7 +74,7 @@ class ConfigLoader {
 
         if (process.env.SESSION_ERROR_THRESHOLD) {
             const parsed = parseInt(process.env.SESSION_ERROR_THRESHOLD, 10);
-            config.sessionErrorThreshold = Number.isFinite(parsed) ? Math.max(1, parsed) : config.sessionErrorThreshold;
+            config.sessionErrorThreshold = Number.isFinite(parsed) ? Math.max(0, parsed) : config.sessionErrorThreshold;
         }
 
         if (process.env.API_KEYS) {
@@ -143,7 +143,13 @@ class ConfigLoader {
         this.logger.info(`  Listening Address: ${config.host}`);
         this.logger.info(`  Streaming Mode: ${config.streamingMode}`);
         this.logger.info(`  Session Selection: ${config.sessionSelectionStrategy}`);
-        this.logger.info(`  Session Error Threshold: ${config.sessionErrorThreshold}`);
+        this.logger.info(
+            `  Session Error Threshold: ${
+                config.sessionErrorThreshold > 0
+                    ? `Disable after ${config.sessionErrorThreshold} browser / WebSocket errors`
+                    : "Disabled"
+            }`
+        );
         this.logger.info(`  Force Thinking: ${config.forceThinking}`);
         this.logger.info(`  Force Web Search: ${config.forceWebSearch}`);
         this.logger.info(`  Force URL Context: ${config.forceUrlContext}`);

@@ -111,7 +111,7 @@
     "errorDeleteCurrentAccount": "无法删除当前正在运行的账号。",
     "errorInvalidIndex": "无效的账号索引。",
     "errorInvalidMode": "无效的模式。请使用 'fake' 或 'real'。",
-    "errorsLabel": "错误",
+    "errorsLabel": "连续错误",
     "errorThresholdLabel": "错误阈值",
     "expand": "展开",
     "fake": "假",

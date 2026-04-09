@@ -111,7 +111,7 @@
     "errorDeleteCurrentAccount": "Cannot delete the currently running account.",
     "errorInvalidIndex": "Invalid account index.",
     "errorInvalidMode": "Invalid mode. Use 'fake' or 'real'.",
-    "errorsLabel": "Errors",
+    "errorsLabel": "Consecutive Errors",
     "errorThresholdLabel": "Error Threshold",
     "expand": "Expand",
     "fake": "Fake",

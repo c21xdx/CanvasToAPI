@@ -348,7 +348,7 @@
                                         {{ tf("errorThresholdLabel", "Error Threshold") }}
                                         <EnvVarTooltip env-var="SESSION_ERROR_THRESHOLD" doc-section="proxy-config" />
                                     </span> </span
-                                ><span class="value">{{ state.sessionErrorThreshold }}</span>
+                                ><span :class="sessionErrorThresholdClass">{{ sessionErrorThresholdText }}</span>
                             </div>
                         </div>
                     </section>
@@ -1346,6 +1346,12 @@ computed(() => [
     { label: t("dark"), value: "dark" },
 ]);
 const activeSessionCount = computed(() => sessions.value.filter(session => !session.disabledAt).length);
+const sessionErrorThresholdText = computed(() =>
+    state.sessionErrorThreshold > 0 ? String(state.sessionErrorThreshold) : t("disabled")
+);
+const sessionErrorThresholdClass = computed(() =>
+    state.sessionErrorThreshold > 0 ? "value" : "value status-text-bold status-error"
+);
 const serviceConnectedText = computed(() => (state.serviceConnected ? t("running") : t("disconnected")));
 const serviceConnectedClass = computed(() => (state.serviceConnected ? "status-ok" : "status-error"));
 const browserConnectedText = computed(() =>
@@ -1448,7 +1454,9 @@ const copyBrowserWsEndpoint = () => copyText(browserWsEndpointText.value);
 
 const applyStatusPayload = payload => {
     const status = payload?.status || {};
-    state.sessionErrorThreshold = Number(status.sessionErrorThreshold || 3);
+    state.sessionErrorThreshold = Number.isFinite(Number(status.sessionErrorThreshold))
+        ? Number(status.sessionErrorThreshold)
+        : 3;
     state.debugMode = Boolean(status.debugMode);
     state.forceThinking = Boolean(status.forceThinking);
     state.forceUrlContext = Boolean(status.forceUrlContext);

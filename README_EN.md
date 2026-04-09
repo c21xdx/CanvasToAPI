@@ -204,12 +204,12 @@ Deploy directly on Claw Cloud Run, a fully managed container platform.
 
 #### 🌐 Proxy Configuration
 
-| Variable                  | Description                                                                                     | Default |
-| :------------------------ | :---------------------------------------------------------------------------------------------- | :------ |
-| `ROUND`                   | Session selection strategy. Supported values: `round` and `random`.                             | `round` |
-| `SESSION_ERROR_THRESHOLD` | Automatically disable a browser session after this many accumulated browser / WebSocket errors. | `3`     |
-| `MAX_RETRIES`             | Maximum number of retries for a failed request.                                                 | `3`     |
-| `RETRY_DELAY`             | Delay between retries in milliseconds.                                                          | `2000`  |
+| Variable                  | Description                                                                                                                     | Default |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------------ | :------ |
+| `ROUND`                   | Session selection strategy. Supported values: `round` and `random`.                                                             | `round` |
+| `SESSION_ERROR_THRESHOLD` | Automatically disable a browser session after this many accumulated browser / WebSocket errors. Set to `0` to never disable it. | `3`     |
+| `MAX_RETRIES`             | Maximum number of retries for a failed request.                                                                                 | `3`     |
+| `RETRY_DELAY`             | Delay between retries in milliseconds.                                                                                          | `2000`  |
 
 #### 🗒️ Other Configuration
 
