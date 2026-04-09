@@ -9,7 +9,7 @@
 ## ✨ 功能特性
 
 - 🔄 **API 兼容性**：同时兼容 OpenAI API、Gemini API 和 Anthropic API 格式
-- 🌐 **浏览器会话中转**：通过 Gemini 网页会话承接请求，不再依赖本地 `auth` 文件
+- 🌐 **模型支持**：支持 Gemini 3 Flash Preview，几乎无上限调用
 - 🔁 **多会话调度**：支持多个浏览器会话同时连接，按轮询或随机策略分配请求
 - 🔧 **支持工具调用**：OpenAI、Gemini 和 Anthropic 接口均支持 Tool Calls (Function Calling)
 - 📊 **可视化控制台**：提供状态页、日志页和在线配置开关，方便观察服务运行状态

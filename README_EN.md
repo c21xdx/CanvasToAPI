@@ -9,7 +9,7 @@ A tool that exposes a Gemini web session as OpenAI API, Gemini API, and Anthropi
 ## ✨ Features
 
 - 🔄 **API Compatibility**: Compatible with OpenAI API, Gemini API, and Anthropic API formats
-- 🌐 **Browser Session Relay**: Uses live Gemini browser sessions instead of local `auth` files
+- 🌐 **Model Support**: Supports Gemini 3 Flash Preview with near-unlimited usage
 - 🔁 **Multi-Session Scheduling**: Supports multiple connected browser sessions with round-robin or random selection
 - 🔧 **Tool Calls Support**: OpenAI, Gemini, and Anthropic endpoints support Tool Calls (Function Calling)
 - 📊 **Visual Console**: Includes status, logs, and runtime switches for easier operations
