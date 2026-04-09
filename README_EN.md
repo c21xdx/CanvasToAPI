@@ -254,3 +254,8 @@ Thanks to everyone who has contributed time, effort, and ideas to this project.
 If you find CanvasToAPI useful, consider giving it a ⭐️!
 
 [![Star History Chart](https://api.star-history.com/svg?repos=iBUHub/CanvasToAPI&type=date&legend=top-left)](https://www.star-history.com/#iBUHub/CanvasToAPI&type=date&legend=top-left)
+
+## Community Support
+
+Learn AI, go to L Station
+[LinuxDO](https://linux.do)

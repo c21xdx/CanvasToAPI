@@ -254,3 +254,8 @@ services:
 如果你觉得 CanvasToAPI 对你有帮助，欢迎给项目点一个 ⭐️！
 
 [![Star History Chart](https://api.star-history.com/svg?repos=iBUHub/CanvasToAPI&type=date&legend=top-left)](https://www.star-history.com/#iBUHub/CanvasToAPI&type=date&legend=top-left)
+
+## 社区支持
+
+学 AI , 上 L 站
+[LinuxDO](https://linux.do)
