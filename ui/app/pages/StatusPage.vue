@@ -138,7 +138,7 @@
                             ></span>
                         </h3>
                         <div class="status-list">
-                            <div class="status-item status-item-ws-endpoint">
+                            <div class="status-item">
                                 <span class="label">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +185,7 @@
                                     browserConnectedText
                                 }}</span>
                             </div>
-                            <div class="status-item">
+                            <div class="status-item status-item-ws-endpoint">
                                 <span class="label">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -232,33 +232,6 @@
                                         </span>
                                     </span>
                                 </span>
-                            </div>
-                            <div class="status-item">
-                                <span class="label">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        style="margin-right: 6px"
-                                    >
-                                        <line x1="4" y1="6" x2="20" y2="6"></line>
-                                        <line x1="4" y1="12" x2="20" y2="12"></line>
-                                        <line x1="4" y1="18" x2="20" y2="18"></line>
-                                        <circle cx="9" cy="6" r="2"></circle>
-                                        <circle cx="15" cy="12" r="2"></circle>
-                                        <circle cx="11" cy="18" r="2"></circle>
-                                    </svg>
-                                    <span>
-                                        {{ tf("selectionStrategyLabel", "Selection Strategy") }}
-                                        <EnvVarTooltip env-var="ROUND" doc-section="proxy-config" />
-                                    </span> </span
-                                ><span class="value mono">{{ selectionStrategyText }}</span>
                             </div>
                         </div>
                     </section>
@@ -323,6 +296,33 @@
                                     </svg>
                                     {{ tf("totalSessionsLabel", "Total Sessions") }} </span
                                 ><span class="value">{{ sessions.length }}</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="margin-right: 6px"
+                                    >
+                                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                                        <circle cx="9" cy="6" r="2"></circle>
+                                        <circle cx="15" cy="12" r="2"></circle>
+                                        <circle cx="11" cy="18" r="2"></circle>
+                                    </svg>
+                                    <span>
+                                        {{ tf("selectionStrategyLabel", "Selection Strategy") }}
+                                        <EnvVarTooltip env-var="ROUND" doc-section="proxy-config" />
+                                    </span> </span
+                                ><span class="value mono">{{ selectionStrategyText }}</span>
                             </div>
                             <div class="status-item">
                                 <span class="label">
@@ -1351,7 +1351,7 @@ const serviceConnectedClass = computed(() => (state.serviceConnected ? "status-o
 const browserConnectedText = computed(() =>
     activeSessionCount.value > 0 ? t("connected", { fallback: "Connected" }) : t("disconnected")
 );
-const browserConnectedClass = computed(() => (activeSessionCount.value > 0 ? "status-ok" : "status-warning"));
+const browserConnectedClass = computed(() => (activeSessionCount.value > 0 ? "status-ok" : "status-error"));
 const browserWsEndpointText = computed(() => {
     if (typeof window === "undefined") {
         return state.browserWsPath || "/ws";
@@ -2287,22 +2287,12 @@ watchEffect(() => {
         padding: 16px;
         padding-bottom: 90px;
     }
-    .page-header-split {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .section-header,
-    .section-actions {
-        align-items: flex-start;
-        flex-direction: column;
-    }
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
     .logs-view-container {
         height: calc(100vh - 106px);
     }
-    .switch-container,
     .session-row {
         flex-direction: column;
         align-items: flex-start;
