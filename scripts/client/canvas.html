@@ -285,6 +285,16 @@
 </div>
 
 <script>
+    let RealWebSocket = WebSocket;
+    try {
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+        if (iframe.contentWindow?.WebSocket) {
+            RealWebSocket = iframe.contentWindow.WebSocket;
+        }
+    } catch {}
+
     const DEFAULT_ENDPOINT = "ws://127.0.0.1:7861/ws";
     const API_KEY_STORAGE_KEY = "canvasToApi.apiKey";
     const ENDPOINT_STORAGE_KEY = "canvasToApi.wsEndpoint";
@@ -685,7 +695,7 @@
                     this.shouldReconnect = true;
                     this.isConnected = false;
                     this.isAuthenticated = false;
-                    this.socket = new WebSocket(wsUrl);
+                    this.socket = new RealWebSocket(wsUrl);
 
                     this.socket.addEventListener("open", () => {
                         Logger.output("WebSocket connected, waiting for authentication...");
