@@ -59,6 +59,8 @@ A tool that exposes a Gemini web session as OpenAI API, Gemini API, and Anthropi
    - `API Key`: enter the same key you use for API requests
    - `Browser Identifier`: an optional browser tag; if left blank, the page auto-generates a daily identifier
 
+   If you use Chrome as the browser client, first open `chrome://flags/#local-network-access-check` in the address bar, set it to `Disabled`, and then connect to the local server with `ws://127.0.0.1:7861/ws`.
+
    Then click `Save` and click `Connect`. Once connected, confirm that `Browser Sessions` shows at least one online session in the status page.
 
 6. Start sending API requests:
@@ -232,6 +234,7 @@ The current version no longer uses local `auth` files or a `setup-auth` bootstra
    If that shared link is no longer available, go to Gemini, turn on Canvas, and create a new Canvas with the contents of [scripts/client/canvas.html](scripts/client/canvas.html).
 4. Enter the browser identifier (`Browser Identifier`), API key, and the server WebSocket endpoint (`Server WS Endpoint`) on that page.
 5. Use the same API key that you use for API requests. For local deployments, `Server WS Endpoint` can be `ws://127.0.0.1:7861/ws`. If the console is accessed through `https://` on a remote server, it should be `wss://your-domain-or-public-address/ws`.
+   If you use Chrome as the browser client, first open `chrome://flags/#local-network-access-check` in the address bar, set it to `Disabled`, and then connect to the local server through the local `ws://` endpoint.
 6. Wait until the status page shows at least one online browser session before sending API traffic.
 
 ### 🧠 Model List Configuration

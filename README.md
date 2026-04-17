@@ -59,6 +59,8 @@
    - `API Key`：填写与请求时相同的 `API_KEYS` 中任意一个 key
    - `Browser Identifier`：浏览器标志，可自定义；留空时页面会自动生成每日标志
 
+   如果你使用 Chrome 作为浏览器端，请先在地址栏输入 `chrome://flags/#local-network-access-check`，将该项改为 `Disabled`，再通过 `ws://127.0.0.1:7861/ws` 连接本地服务端。
+
    填写完成后点击 `保存` 再点击 `连接`。连接成功后，回到状态页确认 `浏览器会话` 中已有在线会话。
 
 6. 开始调用 API：
@@ -232,6 +234,7 @@ services:
    如果该分享链接已失效，请前往 Gemini 页面，开启 Canvas，并使用 [scripts/client/canvas.html](scripts/client/canvas.html) 里的内容新建一个 Canvas。
 4. 在页面中填写浏览器标志（`Browser Identifier`）、API Key，以及服务端 WebSocket 地址（`Server WS Endpoint`）。
 5. `API Key` 请填写与你请求 API 时相同的 key；`Server WS Endpoint` 本地可填写 `ws://127.0.0.1:7861/ws`，如果控制台是通过 `https://` 访问的远程服务，则应填写 `wss://你的域名或公网地址/ws`。
+   如果你使用 Chrome 作为浏览器端，请先在地址栏输入 `chrome://flags/#local-network-access-check`，将该项改为 `Disabled`，再通过本地 `ws://` 地址连接服务端。
 6. 等待状态页出现在线会话后，再开始调用 API。
 
 ### 🧠 模型列表配置
